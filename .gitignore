@@ -26,7 +26,6 @@ build/
 # Media / static files
 media/
 staticfiles/
-static/
 
 # Local environment variables
 .env
