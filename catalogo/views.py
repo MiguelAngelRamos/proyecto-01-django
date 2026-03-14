@@ -2,7 +2,8 @@ from django.shortcuts import render
 from datetime import datetime
 
 def lista_productos(request):
-
+    if request.method == 'POST':
+        print("Formulario recibido:", request.POST)
     ## Simula la informacion que obtenemos de una base de datos
     productos = [
         {'nombre': 'Arroz Grado 1', 'precio': 1200.50, 'stock': 15, 'categoria': 'Abarrotes'},

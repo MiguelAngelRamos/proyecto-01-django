@@ -3,6 +3,8 @@
 {% block contenido %}
   <h1>{{tienda|upper}}</h1>
   <p>Fecha de consulta: {{ fecha_hoy|date:"d/m/Y" }}</p>
+   <!-- Aqui usamos el partial de formulario -->
+  {% include "partials/formulario.html" %}
   <div class="row">
     {% for producto in productos %}
       <div class="col-md-4 mb-3">
