@@ -7,6 +7,10 @@
    <!-- Aqui usamos el partial de formulario -->
   {% include "partials/formulario.html" %}
 
+  {% if error %}
+    <div class="alert alert-danger mt-2">{{ error }}</div>
+  {% endif %}
+
   <hr>
 
   <div class="row g-3">
