@@ -1,5 +1,25 @@
 {% extends "base.html" %}
 {% block titulo %}Lista de Productos{% endblock %}
 {% block contenido %}
-  <h1>Lista de Productos - Por fin estamos aqui -  utilizando de manera correcta el bloque</h1>
+  <h1>{{tienda|upper}}</h1>
+  <p>Fecha de consulta: {{ fecha_hoy|date:"d/m/Y" }}</p>
+  <div class="row">
+    {% for producto in productos %}
+      <div class="col-md-4 mb-3">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">{{ producto.nombre|title }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{producto.categoria}}</h6>
+            <p class="card-text text-primary fw-bold">${{ producto.precio }}</p>
+
+            {% if producto.stock > 0 %}
+              <span class="badge bg-success">En Stock: {{ producto.stock }}</span>
+            {% else %}
+              <span class="badge bg-danger">Sin Stock</span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
 {% endblock %}
