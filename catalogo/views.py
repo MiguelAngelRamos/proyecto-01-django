@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from datetime import datetime
 
 ## Simula la informacion que obtenemos de una base de datos
@@ -11,6 +11,7 @@ PRODUCTOS_DB = [
 def lista_productos(request):
     error = None
     if request.method == 'POST':
+        print("Datos recibidos del formulario:", request.POST)  # Debug: Ver qué datos se reciben
         codigo = request.POST.get('codigo').strip().upper();
         codigo_duplicado = False
         for producto in PRODUCTOS_DB:
@@ -28,6 +29,7 @@ def lista_productos(request):
                 'categoria': request.POST.get('categoria'),
             }
             PRODUCTOS_DB.append(nuevo_producto)
+            return redirect('lista_productos')  # Redirige para evitar reenvío de formulario
 
     contexto = {
         'fecha_hoy': datetime.now(),
