@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from datetime import datetime
+
 def lista_productos(request):
 
     ## Simula la informacion que obtenemos de una base de datos
