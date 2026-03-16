@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 # Create your views here.
 USUARIOS_DB = {
@@ -13,7 +13,21 @@ MOVIMIENTOS_DB = [
 ]
 
 def login_view(request):
-    pass
+    if 'usuario' in request.session:
+        return redirect('panel_bodega')
+    error = None
+    if request.method == 'POST':
+        usuario = request.POST.get('usuario', '').strip()
+        password = request.POST.get('password', '').strip()
+
+        ## validamos
+        if USUARIOS_DB.get(usuario) == password:
+            # Creamos o guardamos la session
+            request.session['usuario'] = usuario
+            return redirect('panel_bodega')
+        else:
+            error = 'credenciales incorrectas'
+    return render(request, 'bodega/login.html', {'error':error})
 
 def logout_view(request):
     pass
