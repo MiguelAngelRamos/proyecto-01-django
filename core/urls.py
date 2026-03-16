@@ -20,6 +20,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('catalogo.urls')),
+    path('bodega/', include('bodega.urls')),
 ]
 
 ## 127.0.0.1:8000/
