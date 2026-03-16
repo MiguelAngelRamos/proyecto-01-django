@@ -56,3 +56,9 @@ INSTALLED_APPS = [
 ]
 
 ```
+
+## Arrancar Proyect Django 
+
+```sh
+python manage.py runserver
+```
