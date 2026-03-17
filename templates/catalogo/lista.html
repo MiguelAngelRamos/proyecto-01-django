@@ -23,9 +23,9 @@
             <p class="card-text text-primary fw-bold">${{ producto.precio }}</p>
 
             {% if producto.stock > 0 %}
-              <span class="badge bg-success">En Stock: {{ producto.stock }}</span>
+              <div class="badge bg-success badge-personalizado">En Stock: {{ producto.stock }}</div>
             {% else %}
-              <span class="badge bg-danger">Sin Stock</span>
+              <div class="badge bg-danger badge-personalizado">Sin Stock</div>
             {% endif %}
           </div>
         </div>
