@@ -28,8 +28,35 @@
     {% block contenido %}{% endblock %}
   </main>
 
-  <footer class="text-center mt-5 py-3 border-top">
-    {% block footer %} &copy; 2026 Minimarket "Sofia". All rights reserved. {% endblock %}
-  </footer>
+ <footer class="bg-dark text-white pt-4 pb-3 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h6 class="text-uppercase fw-bold">Django Store</h6>
+                    <p class="text-white-50 small mb-0">Tu minimarket de confianza. Productos de calidad al mejor precio.</p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h6 class="text-uppercase fw-bold">Enlaces</h6>
+                    <ul class="list-unstyled small mb-0">
+                        <li><a href="/" class="text-white-50 text-decoration-none">Catálogo</a></li>
+                        <li><a href="/bodega/" class="text-white-50 text-decoration-none">Bodega</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h6 class="text-uppercase fw-bold">Contacto</h6>
+                    <p class="text-white-50 small mb-0">
+                        contacto@djangostore.cl<br>
+                        +56 9 1234 5678
+                    </p>
+                </div>
+            </div>
+            <hr class="border-secondary">
+            <p class="text-center text-white-50 small mb-0">
+                 {% block footer %} &copy; 2026 Minimarket "Sofia". All rights reserved. {% endblock %}
+            </p>
+        </div>
+    </footer>
 </body>
 </html>
+
+
