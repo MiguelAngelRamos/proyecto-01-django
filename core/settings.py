@@ -116,7 +116,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+# ERROR: STATIC_URL estaba definido como 'static/' (ruta relativa).
+# Esto causaba que {% static %} generara URLs relativas, por lo que los
+# archivos CSS/JS solo cargaban en la ruta raíz '/'. En rutas como '/bodega/'
+# el navegador buscaba '/bodega/static/...' en lugar de '/static/...'.
+# SOLUCIÓN: Cambiar a '/static/' (ruta absoluta con barra inicial).
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'

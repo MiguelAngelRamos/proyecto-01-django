@@ -21,11 +21,7 @@
   </div>
 </div>
 
-<!-- MOVIMIENTOS_DB = [
-    {'tipo': 'Entrada', 'producto': 'Arroz Grado 1',      'cantidad': 50, 'fecha': '10/03/2026', 'responsable': 'admin'},
-    {'tipo': 'Salida',  'producto': 'Aceite de Oliva',    'cantidad':  3, 'fecha': '11/03/2026', 'responsable': 'sofia'},
-    {'tipo': 'Entrada', 'producto': 'Detergente Líquido', 'cantidad': 20, 'fecha': '12/03/2026', 'responsable': 'admin'},
-] -->
+{% include 'partials/form_movimiento.html' %}
 <h4 class="mb-3">Historial de Movimientos</h4>
 {% if movimientos %}
 <div class="table-responsive">
