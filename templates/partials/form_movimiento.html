@@ -3,17 +3,28 @@
     <h5>Registrar Movimiento de Bodega</h5>
   </div>
   <div class="card-body">
-    <div class="row g-3">
+    <form method="post">
+      {% csrf_token %}
+      <div class="row g-3">
+        <div class="col-md-2">
+          <select name="tipo" class="form-select" required>
+            <option value="" disabled selected>Tipo</option>
+            <option value="Entrada">Entrada</option>
+            <option value="Salida">Salida</option>
+          </select>
+        </div>
 
-      <div class="col-md-2">
-        <select name="tipo" class="form-select" required>
-          <option value="" disabled selected>Tipo</option>
-          <option value="Entrada">Entrada</option>
-          <option value="Salida">Salida</option>
-        </select>
+        <div class="col-md-5">
+          <input type="text" name="producto" class="form-control" placeholder="Nombre de Producto" required>
+        </div>
+
+        <div class="col-md-3">
+          <input type="number" name="cantidad" class="form-control" placeholder="Cantidad" min="1" required>
+        </div>
+        <div class="col-md-2 d-grid">
+          <button type="submit" class="btn btn-outline-success">Registrar</button>
+        </div>
       </div>
+    </form>
 
-      <div class="col-md-5"></div>
-    </div>
   </div>
-</div>

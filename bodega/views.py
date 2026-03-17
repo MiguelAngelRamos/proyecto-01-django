@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-
+from datetime import datetime
 # Create your views here.
 USUARIOS_DB = {
     'admin': '1234',
@@ -42,6 +42,14 @@ def panel_bodega(request):
         return redirect('login_bodega')
     
     if request.method == 'POST':
+        nuevo_movimiento = {
+            'tipo': request.POST.get('tipo', ''),
+            'producto': request.POST.get('producto', '').strip(),
+            'cantidad': int(request.POST.get('cantidad', 0)),
+            'fecha': datetime.now().strftime('%d/%m/%Y'),
+            'responsable': usuario_session,
+        }
+        MOVIMIENTOS_DB.append(nuevo_movimiento)
         return redirect('panel_bodega')
 
     contexto = {
