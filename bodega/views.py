@@ -30,7 +30,8 @@ def login_view(request):
     return render(request, 'bodega/login.html', {'error':error})
 
 def logout_view(request):
-    pass
+    request.session.flush()  # Limpiar la sesión por seguridad
+    return redirect('login_bodega')
 
 def panel_bodega(request):
     # Debe verificar si el usuario esta autenticado, sino redirigir al login
