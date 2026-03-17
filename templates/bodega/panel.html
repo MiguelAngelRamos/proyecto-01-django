@@ -10,13 +10,50 @@
   <a href="{% url 'logout_bodega' %}" class="btn btn-outline-danger">Cerrar sesión</a>
 </div>
 
-<div class="row">
+<div class="row mb-4">
   <div class="col-md-4">
     <div class="card text-white bg-secondary">
       <div class="card-body">
         <h5 class="card-title">Total de movimientos</h5>
         <p class="card-text display-6"> {{ total_movimientos }} </p>
+      </div>
     </div>
   </div>
 </div>
+
+<!-- MOVIMIENTOS_DB = [
+    {'tipo': 'Entrada', 'producto': 'Arroz Grado 1',      'cantidad': 50, 'fecha': '10/03/2026', 'responsable': 'admin'},
+    {'tipo': 'Salida',  'producto': 'Aceite de Oliva',    'cantidad':  3, 'fecha': '11/03/2026', 'responsable': 'sofia'},
+    {'tipo': 'Entrada', 'producto': 'Detergente Líquido', 'cantidad': 20, 'fecha': '12/03/2026', 'responsable': 'admin'},
+] -->
+<h4 class="mb-3">Historial de Movimientos</h4>
+{% if movimientos %}
+<div class="table-responsive">
+    <table class="table table-striped align-middle">
+  <thead class="table-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Tipo</th>
+      <th scope="col">Producto</th>
+      <th scope="col">Cantidad</th>
+      <th scope="col">Fecha</th>
+      <th scope="col">Responsable</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for mov in movimientos %}
+    <tr>
+      <td>{{forloop.counter}}</td>
+      <td>{{ mov.tipo }}</td>
+      <td>{{ mov.producto }}</td>
+      <td>{{ mov.cantidad }}</td>
+      <td>{{ mov.fecha }}</td>
+      <td>{{ mov.responsable }}</td>
+    </tr>
+    {% endfor %}
+
+  </tbody>
+</table>
+</div>
+{% endif %}
  {% endblock %}
