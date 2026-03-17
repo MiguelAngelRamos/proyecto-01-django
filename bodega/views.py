@@ -32,5 +32,20 @@ def login_view(request):
 def logout_view(request):
     pass
 
-def panel_view(request):
-    pass
+def panel_bodega(request):
+    # Debe verificar si el usuario esta autenticado, sino redirigir al login
+    usuario_session = request.session.get('usuario')
+
+    if not usuario_session or usuario_session not in USUARIOS_DB:
+        request.session.flush()  # Limpiar la sesión por seguridad
+        return redirect('login_bodega')
+    
+    if request.method == 'POST':
+        return redirect('panel_bodega')
+
+    contexto = {
+            'movimientos': MOVIMIENTOS_DB,
+            'usuario': usuario_session,
+            'total_movimientos': len(MOVIMIENTOS_DB),
+    }
+    return render(request, 'bodega/panel.html', contexto)
