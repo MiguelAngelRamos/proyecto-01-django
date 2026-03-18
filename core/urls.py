@@ -22,5 +22,7 @@ urlpatterns = [
     path('', include('catalogo.urls')),
     path('bodega/', include('bodega.urls')), ## 127.0.0.1:8000/bodega/
 ]
-
-## 127.0.0.1:8000/
+## 
+## 127.0.0.1:8000/bodega/static/
+## 127.0.0.1:8000/cart/static/
+## 127.0.0.1:8000/static/
