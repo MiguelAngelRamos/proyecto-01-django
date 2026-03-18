@@ -24,11 +24,11 @@
         <div class="col-xl-2">
           <select name="categoria_id" class="form-select" required>
             <option value="" disabled selected>Selecciona Categoría</option>
-            <option value="Abarrotes">Abarrotes</option>
-            <option value="Limpieza">Limpieza</option>
-            <option value="Bebidas">Bebidas</option>
-            <option value="Dulces">Dulces</option>
-            <option value="Lácteos">Lácteos</option>
+            {% for categoria in categorias %}
+              <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+            {% empty %}
+              <option value="" disabled>No hay categorías disponibles</option>
+            {% endfor %}
           </select>
         </div>
         <div class="col-xl-2">
