@@ -33,3 +33,16 @@ DATABASES = {
 # Sesiones se almacenan en una tabla llamada django_session de PostgreSQL
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 ```
+
+
+## 5. Generar y aplicar Migraciones
+
+```shell
+python manage.py makemigrations catalogo
+```
+```shell
+python manage.py makemigrations bodega
+```
+```shell
+python manage.py migrate
+```
