@@ -38,15 +38,32 @@ def panel_bodega(request):
     
     error = None
     if request.method == 'POST':
-        nuevo_movimiento = {
-            'tipo': request.POST.get('tipo', ''),
-            'producto': request.POST.get('producto', '').strip(),
-            'cantidad': int(request.POST.get('cantidad', 0)),
-            'fecha': datetime.now().strftime('%d/%m/%Y'),
-            'responsable': usuario_session,
-        }
-        MOVIMIENTOS_DB.append(nuevo_movimiento)
-        return redirect('panel_bodega')
+        producto_id = request.POST.get('producto_id')
+        tipo = request.POST.get('tipo', '')
+        cantidad = int(request.POST.get('cantidad', 0))
+        
+        #* SELECT * FROM catalogo_producto WHERE id = producto_id;
+        producto = Producto.objects.filter(id=producto_id).first()
+        
+        if tipo == 'Salida' and cantidad > producto.stock:
+            error = (
+                f'Stock insuficiente para "{producto.nombre}". '
+                f'Disponible: {producto.stock} unidad(es).'
+            )
+        else:
+            # creo el movimiento
+            Movimiento.object.create(
+                tipo = tipo,
+                producto = producto,
+                cantidad = cantidad,
+                responsable = usuario_objeto
+            )
+            if tipo == 'Entrada':
+                Producto.object.filter(id = producto.id).update(stock=('stock') + cantidad)
+            else:
+                Producto.object.filter(id=producto.id).update(stock=('stock')-cantidad)
+            
+            return redirect('panel_bodega')
 
     #  SELECT * FROM bodega_movimiento JOIN catalogo_producto ON bodega_movimiento.producto_id = catalogo_producto.id JOIN bodega_usuario ON bodega_movimiento.responsable_id = bodega_usuario.id esto equivale a -> 'movimientos': Movimiento.objects.select_related('producto', 'responsable').all()
     
