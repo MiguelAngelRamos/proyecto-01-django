@@ -1,12 +1,6 @@
 from django.shortcuts import render, redirect
 from datetime import datetime
 from .models import Producto, Categoria
-## Simula la informacion que obtenemos de una base de datos
-PRODUCTOS_DB = [
-        {'codigo': 'ARR-001', 'nombre': 'Arroz Grado 1', 'precio': 1200.50, 'stock': 15, 'categoria': 'Abarrotes'},
-        {'codigo': 'ACE-002', 'nombre': 'Aceite de Oliva', 'precio': 5500.00, 'stock':0, 'categoria': 'Abarrotes'},
-        {'codigo': 'DET-003', 'nombre': 'Detergente Líquido', 'precio': 3000.75, 'stock': 8, 'categoria': 'Limpieza'},
-]
 
 def lista_productos(request):
     error = None
@@ -16,7 +10,10 @@ def lista_productos(request):
             error = f'El código "{codigo}" ya existe. Usa un código diferente.'
         else:
             categoria_objeto = Categoria.objects.get(id=request.POST.get('categoria_id'))
+            #* SELECT * FROM catalogo_categoria WHERE id = 1
 
+            #* Detras de escena se genera el sql
+            #* INSERT INTO catalogo_producto (codigo, nombre, precio, stock, categoria_id) VALUES (codigo, nombre, precio, stock, categoria_id)
             Producto.objects.create(
                 codigo=codigo,
                 nombre=request.POST.get('nombre', '').strip(),
@@ -25,12 +22,11 @@ def lista_productos(request):
                 categoria=categoria_objeto
             )
             return redirect('lista_productos')
-        #* codigo antiguo artesanal
-
 
     contexto = {
         'fecha_hoy': datetime.now(),
-        'productos': PRODUCTOS_DB,
+        'productos': Producto.objects.select_related('categoria').all(),
+        'categorias': Categoria.objects.all(),
         'tienda': 'Minimarket "Sofia"',
         'error': error
     }    
