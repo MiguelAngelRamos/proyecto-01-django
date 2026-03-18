@@ -26,7 +26,7 @@ class Movimiento(models.Model):
     producto = models.ForeignKey('catalogo.Producto', on_delete=models.PROTECT, related_name='movimientos', verbose_name='Producto')
     # related_name permite acceder a los movimientos de un producto desde el producto mismo
     # producto.movimientos.all() -> QuerySet de movimientos relacionados a ese producto
-    
+
     # PositiveIntegerField -> PostgreSQL -> INTEGER CHECK (cantidad > 0) (rechaza valores negativos o cero)
     cantidad = models.PositiveIntegerField(verbose_name='Cantidad')
 
@@ -42,4 +42,4 @@ class Movimiento(models.Model):
         ordering = ['-fecha', '-id']  # Ordenar por fecha descendente (más reciente primero)
     
     def __str__(self):
-        return f'{self.tipo} - {self.producto.nombre} ({self.cantidad})';
+        return f'{self.tipo} - {self.producto.nombre} ({self.cantidad})'
