@@ -12,7 +12,7 @@ CREATE DATABASE minimarket_sofia;
 
 > **IMPORTANTE** Django no crea la base de datos, solo crea las tablas de una base de datos que ya exista.
 
-## 3. Ir al archivo de configuración en nuestro caso (core/setting.py)
+## 3. Ir al archivo de configuración en nuestro caso (core/settings.py)
 
 ```python
 DATABASES = {
