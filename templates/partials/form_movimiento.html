@@ -15,7 +15,14 @@
         </div>
 
         <div class="col-md-5">
-          <input type="text" name="producto" class="form-control" placeholder="Nombre de Producto" required>
+          <select name="producto_id" class="form-select" required>
+            <option value="" disabled selected>Selecciona Producto</option>
+            {% for producto in productos %}
+              <option value="{{ producto.id }}">{{producto.codigo}} - {{ producto.nombre }}</option>
+            {% empty %}
+              <option disabled>No hay productos disponibles</option>
+            {% endfor %}
+          </select>
         </div>
 
         <div class="col-md-3">

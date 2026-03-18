@@ -30,7 +30,6 @@ def logout_view(request):
 def panel_bodega(request):
     # Debe verificar si el usuario esta autenticado, sino redirigir al login
     usuario_session = request.session.get('usuario')
-    print(usuario_session)
     #* SELECT * FROM bodega_usuario WHERE nombre = usuario_session LIMIT 1
     usuario_objeto = Usuario.objects.filter(nombre=usuario_session).first()
     if not usuario_session or not usuario_objeto:
@@ -38,16 +37,16 @@ def panel_bodega(request):
         return redirect('login_bodega')
     
     error = None
-    # if request.method == 'POST':
-    #     nuevo_movimiento = {
-    #         'tipo': request.POST.get('tipo', ''),
-    #         'producto': request.POST.get('producto', '').strip(),
-    #         'cantidad': int(request.POST.get('cantidad', 0)),
-    #         'fecha': datetime.now().strftime('%d/%m/%Y'),
-    #         'responsable': usuario_session,
-    #     }
-    #     MOVIMIENTOS_DB.append(nuevo_movimiento)
-    #     return redirect('panel_bodega')
+    if request.method == 'POST':
+        nuevo_movimiento = {
+            'tipo': request.POST.get('tipo', ''),
+            'producto': request.POST.get('producto', '').strip(),
+            'cantidad': int(request.POST.get('cantidad', 0)),
+            'fecha': datetime.now().strftime('%d/%m/%Y'),
+            'responsable': usuario_session,
+        }
+        MOVIMIENTOS_DB.append(nuevo_movimiento)
+        return redirect('panel_bodega')
 
     #  SELECT * FROM bodega_movimiento JOIN catalogo_producto ON bodega_movimiento.producto_id = catalogo_producto.id JOIN bodega_usuario ON bodega_movimiento.responsable_id = bodega_usuario.id esto equivale a -> 'movimientos': Movimiento.objects.select_related('producto', 'responsable').all()
     
