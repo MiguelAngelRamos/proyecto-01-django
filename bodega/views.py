@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from datetime import datetime
+from .models import Usuario, Movimiento
 # Create your views here.
 USUARIOS_DB = {
     'admin': '1234',
@@ -19,11 +20,12 @@ def login_view(request):
     if request.method == 'POST':
         usuario = request.POST.get('usuario', '').strip()
         password = request.POST.get('password', '').strip()
-
+        #* SELECT * FROM bodega_usuario WHERE nombre = usuario AND password = password LIMIT 1
+        usuario_objeto = Usuario.objects.filter(nombre=usuario, password=password).first()
         ## validamos
-        if USUARIOS_DB.get(usuario) == password:
+        if usuario_objeto:
             # Creamos o guardamos la session
-            request.session['usuario'] = usuario
+            request.session['usuario'] = usuario_objeto.nombre  # Guardamos solo el nombre en la sesión para evitar almacenar información sensible
             return redirect('panel_bodega')
         else:
             error = 'credenciales incorrectas'
