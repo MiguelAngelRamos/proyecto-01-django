@@ -21,6 +21,10 @@
   </div>
 </div>
 
+{% if error %}
+  <div class="alert alert-danger">{{error}}</div>
+{% endif %}
+
 {% include 'partials/form_movimiento.html' %}
 <h4 class="mb-3">Historial de Movimientos</h4>
 {% if movimientos %}
