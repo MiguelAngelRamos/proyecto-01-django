@@ -5,6 +5,25 @@ from catalogo.models import Producto
 from .models import Usuario, Movimiento
 
 
+# ¿Por qué esta función existe por separado?
+#
+# La función panel_bodega() tiene muchos if/else anidados (validar sesión,
+# validar método POST, validar cantidad, validar stock...). Cada nivel de
+# anidamiento hace que el código sea más difícil de leer y mantener.
+#
+# La regla de diseño es: una función debe hacer UNA sola cosa.
+# panel_bodega() se encarga del flujo HTTP; actualizar el stock es
+# una responsabilidad distinta, así que vive aquí, aislada y fácil de testear.
+#
+# Beneficio práctico: si mañana el cálculo cambia (por ejemplo, agregar
+# un log de auditoría), solo tocas esta función, no el flujo principal.
+def _actualizar_stock(producto_id, tipo, cantidad):
+    if tipo == 'Entrada':
+        Producto.objects.filter(id=producto_id).update(stock=F('stock') + cantidad)
+    else:
+        Producto.objects.filter(id=producto_id).update(stock=F('stock') - cantidad)
+
+
 def login_view(request):
     if 'usuario' in request.session:
         return redirect('panel_bodega')
@@ -41,29 +60,33 @@ def panel_bodega(request):
         producto_id = request.POST.get('producto_id')
         tipo = request.POST.get('tipo', '')
         cantidad = int(request.POST.get('cantidad', 0))
-        
-        #* SELECT * FROM catalogo_producto WHERE id = producto_id;
-        producto = Producto.objects.filter(id=producto_id).first()
-        
-        if tipo == 'Salida' and cantidad > producto.stock:
-            error = (
-                f'Stock insuficiente para "{producto.nombre}". '
-                f'Disponible: {producto.stock} unidad(es).'
-            )
+
+        #*Validación de cantidad positiva 
+        #* La validación HTML5 (min="1") es bypasseable desde DevTools/curl.
+        #* Esta guardia en Python es la defensa real del servidor:
+        #* si cantidad <= 0, rechazamos antes de tocar la BD y evitamos
+        #* el IntegrityError por CHECK (cantidad > 0) de PostgreSQL.
+        if cantidad <= 0:
+            error = 'La cantidad debe ser un número entero positivo (mayor que 0).'
         else:
-            # creo el movimiento
-            Movimiento.objects.create(
-                tipo = tipo,
-                producto = producto,
-                cantidad = cantidad,
-                responsable = usuario_objeto
-            )
-            if tipo == 'Entrada':
-                Producto.objects.filter(id = producto.id).update(stock=F('stock') + cantidad)
+            #* SELECT * FROM catalogo_producto WHERE id = producto_id;
+            producto = Producto.objects.filter(id=producto_id).first()
+
+            if tipo == 'Salida' and cantidad > producto.stock:
+                error = (
+                    f'Stock insuficiente para "{producto.nombre}". '
+                    f'Disponible: {producto.stock} unidad(es).'
+                )
             else:
-                Producto.objects.filter(id=producto.id).update(stock=F('stock')-cantidad)
-            
-            return redirect('panel_bodega')
+                # creo el movimiento
+                Movimiento.objects.create(
+                    tipo = tipo,
+                    producto = producto,
+                    cantidad = cantidad,
+                    responsable = usuario_objeto
+                )
+                _actualizar_stock(producto.id, tipo, cantidad)  # delega la responsabilidad: este flujo no necesita saber cómo se actualiza el stock
+                return redirect('panel_bodega')
 
     #  SELECT * FROM bodega_movimiento JOIN catalogo_producto ON bodega_movimiento.producto_id = catalogo_producto.id JOIN bodega_usuario ON bodega_movimiento.responsable_id = bodega_usuario.id esto equivale a -> 'movimientos': Movimiento.objects.select_related('producto', 'responsable').all()
     
