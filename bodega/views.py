@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from datetime import datetime
-
+from django.db.models import F
 from catalogo.models import Producto
 from .models import Usuario, Movimiento
 
@@ -52,16 +52,16 @@ def panel_bodega(request):
             )
         else:
             # creo el movimiento
-            Movimiento.object.create(
+            Movimiento.objects.create(
                 tipo = tipo,
                 producto = producto,
                 cantidad = cantidad,
                 responsable = usuario_objeto
             )
             if tipo == 'Entrada':
-                Producto.object.filter(id = producto.id).update(stock=('stock') + cantidad)
+                Producto.objects.filter(id = producto.id).update(stock=F('stock') + cantidad)
             else:
-                Producto.object.filter(id=producto.id).update(stock=('stock')-cantidad)
+                Producto.objects.filter(id=producto.id).update(stock=F('stock')-cantidad)
             
             return redirect('panel_bodega')
 
